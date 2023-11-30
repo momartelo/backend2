@@ -81,24 +81,3 @@ export const deletePost = async (req, res) => {
   }
 };
 
-export const addComment = async (req, res) => {
-  try {
-    const { comment } = req.body;
-    const postId = req.params.postId;
-
-    const post = await PostModel.findById(postId);
-    if (!post) {
-      return res.status(404).json({ error: "Post no encontrado" });
-    }
-
-    post.comments.push(comment);
-    await post.save();
-
-    res.json({ message: "Comentario agregado con exito" });
-  } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ error: " Error en el servidor al agregar el comentario" });
-  }
-};

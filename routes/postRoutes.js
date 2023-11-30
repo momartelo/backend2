@@ -1,16 +1,27 @@
-import express from "express";
+import { Router } from "express";
 import {
   createPost,
   getPosts,
-  addComment,
+  editPost,
+  deletePost,
 } from "../controllers/postController.js";
+import {
+  createPostValidations,
+  listPostValidations,
+  getPostValidations,
+  updatePostValidations,
+  deletePostValidations,
+} from "../validations/postValidation.js"
 import authMiddleware from "../middleware/authMiddleware.js";
 
-export const postRouter = express.Router();
+const postRouter = Router();
 
-postRouter.post("/create", authMiddleware, createPost);
-postRouter.get("/all", getPosts);
-postRouter.post("/:postId/comment", authMiddleware, addComment);
-postRouter.get("/prueba", (req, res) => {
-  res.send("Hello World");
-});
+postRouter.post("/create", authMiddleware, createPostValidations , createPost);
+postRouter.get("/all", listPostValidations ,getPosts);
+postRouter.patch("/:postId", authMiddleware, updatePostValidations , editPost);
+postRouter.delete("/:postId", authMiddleware, deletePostValidations , deletePost);
+// postRouter.get("/prueba", (req, res) => {
+//  res.send("Probando si funciona el router");
+// });
+
+export { postRouter };
